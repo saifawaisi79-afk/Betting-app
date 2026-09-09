@@ -1,74 +1,179 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-primary: #080c14;
-  --bg-secondary: #0e1524;
-  --border-color: #1a273e;
-  --accent-green: #00e676;
-  --accent-blue: #00b0ff;
-  --accent-red: #ff3366;
+  --bg-base: #05080f;
+  --bg-card: rgba(11, 16, 27, 0.8);
+  --bg-card-hover: rgba(15, 22, 38, 0.9);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-glow: rgba(0, 230, 118, 0.3);
+  --green: #00e676;
+  --green-dim: #00c853;
+  --blue: #00b0ff;
+  --blue-dim: #0288d1;
+  --purple: #9c27b0;
+  --red: #ff3366;
+  --gold: #ffc107;
+  --text-primary: #f1f5f9;
+  --text-muted: #64748b;
+  --text-dim: #334155;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: #f8fafc;
-  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #080c14;
-}
-::-webkit-scrollbar-thumb {
-  background: #1e2d45;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #2a3f5f;
+/* ═══ Custom Scrollbars ═══ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #05080f; }
+::-webkit-scrollbar-thumb { background: #1e2d45; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #2a3f5f; }
+
+/* ═══ Glassmorphism ═══ */
+.glass {
+  background: rgba(11, 16, 27, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Odds flash animations */
+.glass-strong {
+  background: rgba(8, 12, 20, 0.85);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ═══ Glow Effects ═══ */
+.glow-green { box-shadow: 0 0 30px rgba(0, 230, 118, 0.15), 0 0 60px rgba(0, 230, 118, 0.05); }
+.glow-blue  { box-shadow: 0 0 30px rgba(0, 176, 255, 0.15), 0 0 60px rgba(0, 176, 255, 0.05); }
+.glow-red   { box-shadow: 0 0 30px rgba(255, 51, 102, 0.15), 0 0 60px rgba(255, 51, 102, 0.05); }
+
+.text-glow-green { text-shadow: 0 0 20px rgba(0, 230, 118, 0.5); }
+.text-glow-blue  { text-shadow: 0 0 20px rgba(0, 176, 255, 0.5); }
+
+/* ═══ Gradient Text ═══ */
+.grad-green {
+  background: linear-gradient(135deg, #00e676, #00b0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.grad-gold {
+  background: linear-gradient(135deg, #ffc107, #ff9800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══ Animated Grid Background ═══ */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(0, 230, 118, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 230, 118, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ═══ Shimmer Loading ═══ */
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #0b101b 25%, #162238 50%, #0b101b 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* ═══ Pulse Dot (LIVE) ═══ */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.4); }
+}
+.live-dot { animation: live-pulse 1.4s ease-in-out infinite; }
+
+/* ═══ Float Up ═══ */
+@keyframes float-up {
+  0%   { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-float-up { animation: float-up 0.6s ease forwards; }
+
+/* ═══ Odds Flash ═══ */
 @keyframes flashGreen {
   0%, 100% { background-color: transparent; }
   50% { background-color: rgba(0, 230, 118, 0.25); color: #00e676; }
 }
-
 @keyframes flashRed {
   0%, 100% { background-color: transparent; }
   50% { background-color: rgba(255, 51, 102, 0.25); color: #ff3366; }
 }
+.odds-up   { animation: flashGreen 1.2s ease-in-out; }
+.odds-down { animation: flashRed 1.2s ease-in-out; }
 
-.odds-up {
-  animation: flashGreen 1.2s ease-in-out;
-}
-
-.odds-down {
-  animation: flashRed 1.2s ease-in-out;
-}
-
-/* Audio Waveform Bars */
+/* ═══ Waveform ═══ */
 .waveform-bar {
   width: 3px;
-  background-color: #00e676;
+  background: linear-gradient(to top, #00e676, #00b0ff);
   border-radius: 2px;
   animation: wave 1s ease-in-out infinite alternate;
 }
-
 .waveform-bar:nth-child(2) { animation-delay: 0.15s; }
-.waveform-bar:nth-child(3) { animation-delay: 0.3s; }
+.waveform-bar:nth-child(3) { animation-delay: 0.30s; }
 .waveform-bar:nth-child(4) { animation-delay: 0.45s; }
-.waveform-bar:nth-child(5) { animation-delay: 0.6s; }
+.waveform-bar:nth-child(5) { animation-delay: 0.60s; }
 
 @keyframes wave {
-  0% { height: 4px; }
-  100% { height: 20px; }
+  0%   { height: 4px; }
+  100% { height: 22px; }
+}
+
+/* ═══ Score Counter ═══ */
+@keyframes count-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.count-up { animation: count-up 0.4s ease forwards; }
+
+/* ═══ Card Hover Lift ═══ */
+.card-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ═══ Spin Slow ═══ */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.spin-slow { animation: spin-slow 8s linear infinite; }
+
+/* ═══ Neon Border ═══ */
+.neon-border-green {
+  border: 1px solid rgba(0, 230, 118, 0.4);
+  box-shadow: inset 0 0 20px rgba(0, 230, 118, 0.04), 0 0 20px rgba(0, 230, 118, 0.08);
+}
+.neon-border-blue {
+  border: 1px solid rgba(0, 176, 255, 0.4);
+  box-shadow: inset 0 0 20px rgba(0, 176, 255, 0.04), 0 0 20px rgba(0, 176, 255, 0.08);
 }
