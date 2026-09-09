@@ -1,0 +1,25 @@
+{
+  "name": "@betting/worker",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@betting/db": "workspace:*",
+    "@betting/types": "workspace:*",
+    "bullmq": "^5.24.0",
+    "ioredis": "^5.4.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "tsx": "^4.19.1",
+    "@types/node": "^22.7.5",
+    "@betting/config": "workspace:*"
+  }
+}
