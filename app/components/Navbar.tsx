@@ -48,7 +48,7 @@ export function Navbar() {
                 STAKE<span className="text-[#00e676]">ROOM</span>
               </span>
               <span className="hidden sm:inline-block text-[10px] text-[#00b0ff] uppercase tracking-widest font-mono ml-2 px-1.5 py-0.5 rounded bg-[#00b0ff]/10 border border-[#00b0ff]/20">
-                Live Broadcast
+                🏏 Live Cricket
               </span>
             </div>
           </Link>
@@ -63,7 +63,7 @@ export function Navbar() {
                   : 'text-[#8899aa] hover:text-white hover:bg-[#0f172a]'
               }`}
             >
-              Live Matches
+              Cricket Matches
             </Link>
             <Link
               href="/bets"

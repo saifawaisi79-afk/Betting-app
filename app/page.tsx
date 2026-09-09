@@ -47,7 +47,7 @@ interface Match {
 }
 
 export default function HomePage() {
-  const [selectedSport, setSelectedSport] = useState<string>('ALL');
+  const [selectedSport, setSelectedSport] = useState<string>('Cricket');
   const { addItem, items } = useBetSlipStore();
 
   const { data: matches, isLoading } = useQuery<Match[]>({
@@ -59,7 +59,7 @@ export default function HomePage() {
     refetchInterval: 10000,
   });
 
-  const sports = ['ALL', 'Football', 'Basketball', 'Cricket', 'Tennis', 'Esports'];
+  const sports = ['ALL', 'Cricket', 'Tennis', 'Basketball', 'Kabaddi', 'Esports'];
 
   const filteredMatches = matches?.filter((m) => {
     if (selectedSport === 'ALL') return true;
@@ -78,16 +78,16 @@ export default function HomePage() {
           <div className="max-w-2xl space-y-4 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00e676]/10 border border-[#00e676]/30 text-[#00e676] text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-[#00e676] animate-ping" />
-              Live Interactive Audio Rooms
+              🏏 Live Cricket Audio Rooms
             </div>
             <h1 className="text-4xl sm:text-6xl font-black text-white font-['Outfit'] tracking-tight leading-none">
               WATCH. LISTEN. <br />
               <span className="bg-gradient-to-r from-[#00e676] via-[#00b0ff] to-[#38bdf8] bg-clip-text text-transparent">
-                BET IN REAL TIME.
+                BET ON CRICKET.
               </span>
             </h1>
             <p className="text-[#8899aa] text-base sm:text-lg">
-              Experience the stadium atmosphere with synchronized one-way host voice commentary, live stream sync, and instant bet settlement.
+              Feel the excitement of live cricket with synchronized host commentary, real-time score updates, and instant bet settlement on every ball.
             </p>
 
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
@@ -301,9 +301,9 @@ export default function HomePage() {
           ) : (
             <div className="bg-[#0b101b] border border-[#1a273e] rounded-2xl p-12 text-center text-[#8899aa]">
               <Trophy size={40} className="mx-auto text-[#1a273e] mb-3" />
-              <p className="font-bold text-white">No matches available in this sport category</p>
+              <p className="font-bold text-white">🏏 No cricket matches available right now</p>
               <p className="text-xs text-[#64748b] mt-1">
-                Please switch sports or check back shortly when events are posted.
+                Switch sport or check back when the next cricket event goes live.
               </p>
             </div>
           )}

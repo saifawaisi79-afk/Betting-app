@@ -7,8 +7,8 @@ import { Providers } from './components/Providers';
 import { Toaster } from './components/ui/Toaster';
 
 export const metadata: Metadata = {
-  title: 'StakeRoom — Live Sports Betting & Commentary Broadcast',
-  description: 'Ultra-low latency live sports betting exchange with synchronized host audio commentary rooms.',
+  title: 'StakeRoom — Live Cricket Betting & Commentary Broadcast',
+  description: 'Ultra-low latency live cricket betting exchange with synchronized host audio commentary rooms. Bet on every ball, over, and match.',
 };
 
 export default function RootLayout({
