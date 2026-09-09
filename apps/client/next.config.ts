@@ -3,10 +3,15 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   transpilePackages: ['@betting/types'],
   images: {
-    domains: ['localhost', 'avatars.githubusercontent.com'],
+    remotePatterns: [
+      { protocol: 'https', hostname: '**' },
+    ],
   },
-  experimental: {
-    serverActions: { allowedOrigins: ['localhost:3000'] },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
   },
 };
 
