@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../lib/api';
 import { formatCurrency, formatDate } from '../lib/utils';
 import { useToast } from '../components/ui/Toaster';
+import { Skeleton } from '../components/ui/Skeleton';
 import {
   Receipt,
   CheckCircle2,
@@ -13,6 +15,8 @@ import {
   ArrowRight,
   DollarSign,
   TrendingUp,
+  Activity,
+  Ticket,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -58,7 +62,7 @@ export default function MyBetsPage() {
     },
     onSuccess: () => {
       toast({
-        title: 'Cashout Successful',
+        title: 'Cashout Successful 🎉',
         description: 'Your cashout value was credited immediately to your balance.',
         type: 'success',
       });
@@ -80,105 +84,137 @@ export default function MyBetsPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-7">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-white font-['Outfit'] flex items-center gap-3">
-          <Receipt className="text-[#00e676]" /> My Wagers & Tickets
+        <h1 className="text-2xl sm:text-3xl font-black text-white font-['Outfit'] flex items-center gap-3 tracking-tight">
+          <div className="w-10 h-10 rounded-xl bg-[#00e676]/10 flex items-center justify-center">
+            <Receipt className="text-[#00e676]" size={22} />
+          </div>
+          My Wagers & Bet History
         </h1>
-        <p className="text-sm text-[#8899aa] mt-1">
-          Review your open active slips, track live odds progression, and inspect settled results.
+        <p className="text-sm text-[#8899aa] mt-1.5 max-w-2xl leading-relaxed">
+          Inspect your active open tickets, real-time potential returns, early cashout options, and settled payouts.
         </p>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#1a273e] pb-3">
-        {(['ALL', 'PENDING', 'WON', 'LOST'] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setFilter(tab)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              filter === tab
-                ? 'bg-[#00e676] text-black shadow-md shadow-[#00e676]/20'
-                : 'bg-[#101726] text-[#8899aa] hover:text-white hover:bg-[#162238]'
-            }`}
-          >
-            {tab === 'PENDING' ? 'Active / Open' : tab}
-          </button>
-        ))}
+      <div className="flex items-center gap-2 border-b border-white/[0.06] pb-3 overflow-x-auto no-scrollbar">
+        {(['ALL', 'PENDING', 'WON', 'LOST'] as const).map((tab) => {
+          const count = bets?.filter((b) => (tab === 'ALL' ? true : b.status === tab)).length ?? 0;
+          return (
+            <motion.button
+              key={tab}
+              whileTap={{ scale: 0.96 }}
+              onClick={() => setFilter(tab)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border ${
+                filter === tab
+                  ? 'bg-[#00e676] text-black border-[#00e676] shadow-md shadow-[#00e676]/20'
+                  : 'bg-[#0a0f1d] border-white/[0.06] text-[#8899aa] hover:text-white hover:bg-[#10172a]'
+              }`}
+            >
+              <span>{tab === 'PENDING' ? 'Active / Open' : tab}</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-tabular ${
+                  filter === tab ? 'bg-black/20 text-black' : 'bg-white/[0.06] text-[#8899aa]'
+                }`}
+              >
+                {count}
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
 
       {/* Bets Cards / Feed */}
       {isLoading ? (
-        <div className="p-16 text-center text-[#8899aa]">Loading your bet history...</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="rounded-2xl bg-[#0a0f1d] border border-white/[0.06] p-5 space-y-4">
+              <div className="flex justify-between">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-5 w-20 rounded-full" />
+              </div>
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-16 w-full rounded-xl" />
+              <div className="pt-2 flex justify-between">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-5 w-24" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : filteredBets && filteredBets.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredBets.map((bet) => {
             const isPending = bet.status === 'PENDING';
             const isWon = bet.status === 'WON';
             const isLost = bet.status === 'LOST';
 
             return (
-              <div
+              <motion.div
                 key={bet.id}
-                className={`bg-[#0b101b] border rounded-2xl p-5 space-y-4 shadow-xl flex flex-col justify-between transition-all ${
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`bg-[#0a0f1d] border rounded-2xl p-5 space-y-4 shadow-xl flex flex-col justify-between transition-all card-sportsbook ${
                   isWon
-                    ? 'border-emerald-800/80 bg-[#07130e]'
+                    ? 'border-emerald-500/40 bg-[#07130e]'
                     : isLost
-                    ? 'border-red-900/40 opacity-70'
-                    : 'border-[#1a273e]'
+                    ? 'border-rose-500/25 opacity-75'
+                    : 'border-white/[0.08]'
                 }`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] uppercase font-bold text-[#8899aa]">
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-[10px] uppercase font-bold text-[#8899aa] tracking-wider">
                       {bet.market?.name}
                     </span>
                     <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1 ${
+                      className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5 border ${
                         isWon
-                          ? 'bg-emerald-950 text-[#00e676] border border-emerald-800'
+                          ? 'bg-emerald-500/10 text-[#00e676] border-emerald-500/25'
                           : isLost
-                          ? 'bg-red-950 text-red-400 border border-red-800'
-                          : 'bg-amber-950 text-amber-400 border border-amber-800'
+                          ? 'bg-rose-500/10 text-rose-400 border-rose-500/25'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/25'
                       }`}
                     >
-                      {isWon && <CheckCircle2 size={12} />}
-                      {isLost && <XCircle size={12} />}
-                      {isPending && <Clock size={12} />}
+                      {isWon && <CheckCircle2 size={11} />}
+                      {isLost && <XCircle size={11} />}
+                      {isPending && <Clock size={11} />}
                       {bet.status}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-extrabold text-white">
+                  <h3 className="text-base font-extrabold text-white font-['Outfit'] tracking-tight leading-snug">
                     {bet.match?.teamA} <span className="text-[#8899aa] font-normal text-xs">vs</span> {bet.match?.teamB}
                   </h3>
 
-                  <div className="mt-3 p-3 rounded-xl bg-[#101726] border border-[#1e2d45] flex items-center justify-between">
+                  <div className="mt-3 p-3.5 rounded-xl bg-[#10172a] border border-white/[0.06] flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-[#8899aa] uppercase font-bold block">Selection</span>
+                      <span className="text-[10px] text-[#8899aa] uppercase font-semibold block">Selection</span>
                       <span className="text-sm font-bold text-[#00e676]">{bet.outcome?.name}</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-[#8899aa] uppercase font-bold block">Odds</span>
-                      <span className="font-mono font-extrabold text-white text-sm">
+                      <span className="text-[10px] text-[#8899aa] uppercase font-semibold block">Odds</span>
+                      <span className="font-mono font-extrabold text-white text-sm font-tabular px-2 py-0.5 rounded bg-white/[0.05]">
                         {Number(bet.odds).toFixed(2)}x
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-[#1a273e] space-y-3">
+                <div className="pt-3 border-t border-white/[0.06] space-y-3">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-[#8899aa]">Stake:</span>
-                    <span className="font-mono font-bold text-white">{formatCurrency(bet.stake)}</span>
+                    <span className="font-mono font-bold text-white font-tabular">{formatCurrency(bet.stake)}</span>
                   </div>
 
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-[#8899aa]">
-                      {isWon ? 'Won Amount:' : 'To Return:'}
+                      {isWon ? 'Won Amount:' : 'Potential Return:'}
                     </span>
                     <span
-                      className={`font-mono font-extrabold text-sm ${
+                      className={`font-mono font-black text-sm font-tabular ${
                         isWon ? 'text-[#00e676]' : 'text-white'
                       }`}
                     >
@@ -187,34 +223,38 @@ export default function MyBetsPage() {
                   </div>
 
                   {isPending && (
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => cashoutMutation.mutate(bet.id)}
                       disabled={cashoutMutation.isPending}
-                      className="w-full py-2 rounded-xl bg-[#162238] border border-[#1e2d45] hover:border-[#00e676]/40 text-xs font-bold text-white transition-all flex items-center justify-center gap-1.5"
+                      className="w-full py-2.5 rounded-xl bg-[#10172a] border border-white/[0.08] hover:border-[#00e676]/40 text-xs font-bold text-white transition-all flex items-center justify-center gap-1.5 shadow-sm"
                     >
                       <DollarSign size={13} className="text-[#00e676]" />
                       Early Cashout ({formatCurrency(bet.stake * 0.9)})
-                    </button>
+                    </motion.button>
                   )}
 
-                  <p className="text-[10px] text-[#64748b] text-right">
+                  <p className="text-[10px] text-[#64748b] text-right font-tabular">
                     Placed: {formatDate(bet.createdAt)}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       ) : (
-        <div className="bg-[#0b101b] border border-[#1a273e] rounded-2xl p-12 text-center text-[#8899aa]">
-          <Receipt size={40} className="mx-auto text-[#1a273e] mb-3" />
-          <p className="font-bold text-white">No wagers found in this category</p>
-          <p className="text-xs text-[#64748b] mt-1 mb-4">
-            Place your first live bet on an active match to see your ticket here!
+        <div className="bg-[#0a0f1d] border border-white/[0.08] rounded-2xl p-14 text-center text-[#8899aa] shadow-xl">
+          <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
+            <Ticket size={28} className="text-white/[0.2]" />
+          </div>
+          <p className="font-bold text-white text-base font-['Outfit']">No wagers found in this category</p>
+          <p className="text-xs text-[#64748b] mt-1.5 mb-5 max-w-sm mx-auto leading-relaxed">
+            Place your first live bet on an active match to see real-time updates and early cashout options.
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#00e676] text-black font-extrabold text-xs hover:bg-[#00c853] transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#00e676] text-black font-extrabold text-xs hover:bg-[#00c853] transition-all shadow-lg shadow-[#00e676]/20"
           >
             Explore Live Matches <ArrowRight size={14} />
           </Link>

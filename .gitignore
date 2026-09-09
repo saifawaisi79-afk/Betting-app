@@ -13,6 +13,7 @@ build/
 **/build/
 out/
 **/out/
+*.tsbuildinfo
 
 # Environment files
 .env

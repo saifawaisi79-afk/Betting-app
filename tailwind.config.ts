@@ -8,35 +8,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#080c14',
+        canvas: 'var(--bg-canvas)',
+        'surface-1': 'var(--bg-surface-1)',
+        'surface-2': 'var(--bg-surface-2)',
+        'surface-3': 'var(--bg-surface-3)',
+        background: '#06080e',
         foreground: '#f8fafc',
-        card: '#0f172a',
+        card: '#0a0f1d',
         'card-foreground': '#f8fafc',
         primary: {
           DEFAULT: '#00e676',
           foreground: '#000000',
+          hover: '#00c853',
         },
         secondary: {
-          DEFAULT: '#1e293b',
-          foreground: '#f8fafc',
-        },
-        accent: {
-          DEFAULT: '#38bdf8',
+          DEFAULT: '#00b0ff',
           foreground: '#000000',
         },
+        accent: {
+          DEFAULT: '#00e676',
+          foreground: '#000000',
+          cyan: '#00b0ff',
+          purple: '#8b5cf6',
+        },
         destructive: {
-          DEFAULT: '#ef4444',
+          DEFAULT: '#ff3366',
           foreground: '#ffffff',
         },
         muted: {
-          DEFAULT: '#1e293b',
-          foreground: '#94a3b8',
+          DEFAULT: '#10172a',
+          foreground: '#8899aa',
         },
-        border: '#1e2d45',
+        border: {
+          DEFAULT: 'rgba(255, 255, 255, 0.08)',
+          subtle: 'rgba(255, 255, 255, 0.06)',
+          active: 'rgba(0, 230, 118, 0.35)',
+        },
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Outfit', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
     },
   },

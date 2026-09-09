@@ -89,7 +89,7 @@ export function BetSlipDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/75 backdrop-blur-md"
           />
 
           {/* Drawer content */}
@@ -97,15 +97,20 @@ export function BetSlipDrawer() {
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="relative w-full max-w-md bg-[#0b101b] border-l border-[#1a273e] h-full flex flex-col shadow-2xl z-10"
+            transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+            className="relative w-full max-w-md bg-[#0a0f1d] border-l border-white/[0.08] h-full flex flex-col shadow-2xl z-10"
           >
             {/* Header */}
-            <div className="p-4 border-b border-[#1a273e] flex items-center justify-between bg-[#0e1626]">
-              <div className="flex items-center gap-2">
-                <Zap size={18} className="text-[#00e676]" />
-                <h3 className="font-bold text-white font-['Outfit']">Bet Slip</h3>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[#162238] font-mono text-[#00e676] font-bold">
+            <div className="p-4 sm:p-5 border-b border-white/[0.08] flex items-center justify-between bg-[#06080e]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#00e676]/10 flex items-center justify-center">
+                  <Zap size={18} className="text-[#00e676]" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white font-['Outfit'] text-base tracking-tight">BET SLIP</h3>
+                  <p className="text-[10px] text-[#8899aa] uppercase font-semibold">Active Wagers</p>
+                </div>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#00e676]/15 font-mono text-[#00e676] font-bold border border-[#00e676]/30 font-tabular ml-1">
                   {items.length}
                 </span>
               </div>
@@ -113,15 +118,15 @@ export function BetSlipDrawer() {
                 {items.length > 0 && (
                   <button
                     onClick={clearSlip}
-                    className="p-1.5 text-xs text-[#8899aa] hover:text-[#ff3366] transition-colors"
-                    title="Clear all"
+                    className="p-2 text-xs text-[#8899aa] hover:text-[#ff3366] hover:bg-[#ff3366]/10 rounded-lg transition-colors"
+                    title="Clear ticket"
                   >
                     <Trash2 size={16} />
                   </button>
                 )}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 text-[#8899aa] hover:text-white rounded-lg hover:bg-[#1a273e] transition-colors"
+                  className="p-2 text-[#8899aa] hover:text-white rounded-lg hover:bg-white/[0.06] transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -131,105 +136,114 @@ export function BetSlipDrawer() {
             {/* Slip Items List */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center p-6 text-[#8899aa]">
-                  <Zap size={36} className="text-[#1a273e] mb-3" />
-                  <p className="font-semibold text-white text-sm">Your bet slip is empty</p>
-                  <p className="text-xs text-[#64748b] mt-1 max-w-[200px]">
-                    Click on any match odds to add selections to your ticket.
+                <div className="h-full flex flex-col items-center justify-center text-center p-8 text-[#8899aa]">
+                  <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mb-4">
+                    <Zap size={28} className="text-white/[0.2]" />
+                  </div>
+                  <p className="font-bold text-white text-base font-['Outfit']">Your bet slip is empty</p>
+                  <p className="text-xs text-[#64748b] mt-1.5 max-w-[220px] leading-relaxed">
+                    Select any match outcome to build your ticket and place instant wagers.
                   </p>
                 </div>
               ) : (
                 items.map((item) => (
-                  <div
+                  <motion.div
+                    layout
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
                     key={item.outcomeId}
-                    className="p-3.5 rounded-xl bg-[#111928] border border-[#1e2d45] space-y-3 relative group"
+                    className="p-4 rounded-2xl bg-[#10172a] border border-white/[0.07] space-y-3 relative group shadow-md"
                   >
                     <button
                       onClick={() => removeItem(item.outcomeId)}
-                      className="absolute top-3 right-3 text-[#64748b] hover:text-[#ff3366] transition-colors"
+                      className="absolute top-3.5 right-3.5 text-[#64748b] hover:text-[#ff3366] p-1 transition-colors"
                     >
-                      <X size={14} />
+                      <X size={15} />
                     </button>
 
-                    <div>
-                      <span className="text-[10px] uppercase font-bold text-[#00e676] tracking-wider">
+                    <div className="pr-6">
+                      <span className="text-[10px] uppercase font-bold text-[#00e676] tracking-wider block mb-0.5">
                         {item.marketName}
                       </span>
                       <h4 className="font-bold text-sm text-white">{item.outcomeName}</h4>
-                      <p className="text-xs text-[#8899aa] truncate">{item.matchTitle}</p>
+                      <p className="text-xs text-[#8899aa] truncate mt-0.5">{item.matchTitle}</p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-[#1e2d45]">
-                      <span className="text-xs text-[#8899aa]">Odds:</span>
-                      <span className="font-mono font-bold text-[#00e676] text-sm">
+                    <div className="flex items-center justify-between py-2 border-t border-white/[0.06]">
+                      <span className="text-xs text-[#8899aa] font-medium">Odds Multiplier:</span>
+                      <span className="font-mono font-extrabold text-[#00e676] text-sm font-tabular px-2 py-0.5 rounded-md bg-[#00e676]/10 border border-[#00e676]/20">
                         {item.odds.toFixed(2)}x
                       </span>
                     </div>
 
                     {/* Stake input */}
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#8899aa]">Wager:</span>
-                        <span className="text-[#64748b]">
+                        <span className="text-[#8899aa] font-medium">Stake ($):</span>
+                        <span className="text-[#8899aa]">
                           To Win:{' '}
-                          <strong className="text-[#00e676] font-mono">
+                          <strong className="text-[#00e676] font-mono font-tabular font-bold">
                             {formatCurrency(item.stake * item.odds)}
                           </strong>
                         </span>
                       </div>
                       <div className="relative">
-                        <span className="absolute left-3 top-2 text-xs font-bold text-[#8899aa]">$</span>
+                        <span className="absolute left-3.5 top-2.5 text-xs font-bold text-[#8899aa]">$</span>
                         <input
                           type="number"
                           min="1"
                           value={item.stake || ''}
                           onChange={(e) => updateStake(item.outcomeId, parseFloat(e.target.value) || 0)}
-                          className="w-full pl-7 pr-3 py-1.5 rounded-lg bg-[#0b101b] border border-[#1e2d45] text-white text-sm font-mono font-bold focus:border-[#00e676] focus:outline-none"
+                          className="w-full pl-8 pr-3 py-2 rounded-xl bg-[#06080e] border border-white/[0.1] text-white text-sm font-mono font-bold font-tabular focus:border-[#00e676] focus:outline-none transition-colors"
                         />
                       </div>
 
                       {/* Quick Chips */}
-                      <div className="flex items-center gap-1.5 pt-1">
+                      <div className="flex items-center gap-1.5 pt-0.5">
                         {quickStakes.map((val) => (
-                          <button
+                          <motion.button
                             key={val}
+                            whileTap={{ scale: 0.94 }}
                             onClick={() => updateStake(item.outcomeId, val)}
-                            className={`flex-1 py-1 rounded text-[11px] font-mono font-semibold transition-all ${
+                            className={`flex-1 py-1.5 rounded-lg text-[11px] font-mono font-bold font-tabular transition-all ${
                               item.stake === val
-                                ? 'bg-[#00e676] text-black'
-                                : 'bg-[#1a273e] text-[#8899aa] hover:text-white'
+                                ? 'bg-[#00e676] text-black shadow-md shadow-[#00e676]/20'
+                                : 'bg-[#162035] text-[#8899aa] hover:text-white hover:bg-[#1a2842] border border-white/[0.04]'
                             }`}
                           >
                             +${val}
-                          </button>
+                          </motion.button>
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>
 
             {/* Summary & Submit */}
             {items.length > 0 && (
-              <div className="p-4 bg-[#0e1626] border-t border-[#1a273e] space-y-3">
-                <div className="space-y-1 text-sm">
+              <div className="p-4 sm:p-5 bg-[#06080e] border-t border-white/[0.08] space-y-3.5">
+                <div className="space-y-1.5 text-sm">
                   <div className="flex items-center justify-between text-[#8899aa]">
-                    <span>Total Stake:</span>
-                    <span className="font-mono font-bold text-white">{formatCurrency(totalStake())}</span>
+                    <span>Total Wager:</span>
+                    <span className="font-mono font-bold text-white font-tabular">{formatCurrency(totalStake())}</span>
                   </div>
                   <div className="flex items-center justify-between text-white font-semibold">
-                    <span>Est. Potential Returns:</span>
-                    <span className="font-mono font-extrabold text-[#00e676] text-base">
+                    <span>Est. Payout:</span>
+                    <span className="font-mono font-black text-[#00e676] text-lg font-tabular">
                       {formatCurrency(totalPotentialPayout())}
                     </span>
                   </div>
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={handlePlaceBets}
                   disabled={isSubmitting || totalStake() <= 0}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00e676] to-[#00b0ff] text-black font-extrabold text-sm hover:opacity-95 transition-all shadow-lg shadow-[#00e676]/20 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00e676] to-[#00b0ff] text-black font-extrabold text-sm hover:opacity-95 transition-all shadow-xl shadow-[#00e676]/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     'Processing Wager...'
@@ -238,7 +252,7 @@ export function BetSlipDrawer() {
                       Place Bet Ticket ({formatCurrency(totalStake())}) <ArrowRight size={16} />
                     </>
                   )}
-                </button>
+                </motion.button>
               </div>
             )}
           </motion.div>

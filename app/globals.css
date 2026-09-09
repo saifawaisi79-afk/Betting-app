@@ -5,21 +5,47 @@
 @tailwind utilities;
 
 :root {
-  --bg-base: #05080f;
-  --bg-card: rgba(11, 16, 27, 0.8);
-  --bg-card-hover: rgba(15, 22, 38, 0.9);
-  --border: rgba(255, 255, 255, 0.06);
+  /* Surface Layers (Dark Mode Primary) */
+  --bg-canvas: #06080e;
+  --bg-surface-1: #0a0f1d;
+  --bg-surface-2: #10172a;
+  --bg-surface-3: #162035;
+  --bg-glass: rgba(10, 15, 29, 0.75);
+
+  /* Legacy tokens backward-compatibility */
+  --bg-base: #06080e;
+  --bg-card: rgba(10, 15, 29, 0.85);
+  --bg-card-hover: rgba(16, 23, 42, 0.95);
+
+  /* Border Tokens */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.10);
+  --border-active: rgba(0, 230, 118, 0.35);
+  --border-accent: rgba(0, 176, 255, 0.35);
+  --border: rgba(255, 255, 255, 0.07);
   --border-glow: rgba(0, 230, 118, 0.3);
+
+  /* Brand Accents & Trading Signals */
+  --color-accent: #00e676;
+  --color-accent-hover: #00c853;
+  --color-cyan: #00b0ff;
+  --color-purple: #8b5cf6;
+  --color-odds-up: #00e676;
+  --color-odds-down: #ff3366;
+  --color-warning: #f59e0b;
+
   --green: #00e676;
   --green-dim: #00c853;
   --blue: #00b0ff;
   --blue-dim: #0288d1;
-  --purple: #9c27b0;
+  --purple: #8b5cf6;
   --red: #ff3366;
   --gold: #ffc107;
-  --text-primary: #f1f5f9;
-  --text-muted: #64748b;
-  --text-dim: #334155;
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-muted: #8899aa;
+  --text-dim: #475569;
 }
 
 * {
@@ -58,6 +84,33 @@ body {
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ═══ Surface & Card Utilities ═══ */
+.bg-canvas    { background-color: var(--bg-canvas); }
+.bg-surface-1 { background-color: var(--bg-surface-1); }
+.bg-surface-2 { background-color: var(--bg-surface-2); }
+.bg-surface-3 { background-color: var(--bg-surface-3); }
+
+.border-subtle { border-color: var(--border-subtle); }
+.border-default { border-color: var(--border-default); }
+.border-active { border-color: var(--border-active); }
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.card-sportsbook {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-sportsbook:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
 }
 
 /* ═══ Glow Effects ═══ */

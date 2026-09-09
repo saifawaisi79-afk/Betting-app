@@ -2,9 +2,12 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { api } from './lib/api';
 import { useBetSlipStore } from './lib/store';
 import { formatDate } from './lib/utils';
+import { MatchCardSkeleton } from './components/ui/Skeleton';
+import { Badge } from './components/ui/Badge';
 import Link from 'next/link';
 import {
   Radio, Trophy, Flame, Zap, TrendingUp, Clock,
@@ -254,16 +257,7 @@ export default function HomePage() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="rounded-2xl glass border border-white/[0.04] p-5 space-y-4">
-                <div className="flex justify-between">
-                  <div className="h-4 w-20 rounded shimmer" />
-                  <div className="h-4 w-16 rounded shimmer" />
-                </div>
-                <div className="h-5 w-3/4 rounded shimmer" />
-                <div className="grid grid-cols-3 gap-2">
-                  {[...Array(3)].map((_, j) => <div key={j} className="h-14 rounded-xl shimmer" />)}
-                </div>
-              </div>
+              <MatchCardSkeleton key={i} />
             ))}
           </div>
         ) : filteredMatches && filteredMatches.length > 0 ? (
@@ -274,54 +268,56 @@ export default function HomePage() {
               return (
                 <div
                   key={m.id}
-                  className="group relative glass border border-white/[0.06] rounded-2xl p-5 hover:border-[#00e676]/25 transition-all duration-300 card-lift flex flex-col justify-between overflow-hidden"
+                  className="group relative bg-[#0a0f1d] border border-white/[0.07] rounded-2xl p-5 hover:border-[#00e676]/30 transition-all duration-300 card-lift flex flex-col justify-between overflow-hidden shadow-lg shadow-black/20"
                 >
                   {/* Hover glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00e676]/0 to-[#00e676]/0 group-hover:from-[#00e676]/3 transition-all duration-500 rounded-2xl pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00e676]/0 to-[#00e676]/0 group-hover:from-[#00e676]/5 transition-all duration-500 rounded-2xl pointer-events-none" />
 
                   <div>
                     {/* Meta row */}
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
                         {isLive ? (
-                          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase">
+                          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-extrabold uppercase">
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500 live-dot" /> LIVE
                           </span>
                         ) : (
-                          <span className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.06] text-[#64748b] text-[10px] font-bold uppercase">
+                          <span className="px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-[#8899aa] text-[10px] font-bold uppercase">
                             {m.sport?.name || 'Cricket'}
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] text-[#475569] flex items-center gap-1 font-medium" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                        <Clock size={11} /> {formatDate(m.scheduledStart)}
+                      <span className="text-[11px] text-[#64748b] flex items-center gap-1 font-medium font-tabular">
+                        <Clock size={12} /> {formatDate(m.scheduledStart)}
                       </span>
                     </div>
 
                     {/* Teams */}
                     <div className="mb-4">
-                      <h3 className="text-base font-extrabold text-white group-hover:text-[#00e676] transition-colors leading-tight" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                      <h3 className="text-base font-extrabold text-white group-hover:text-[#00e676] transition-colors leading-tight font-['Outfit']">
                         {m.teamA}
                       </h3>
-                      <p className="text-[11px] text-[#475569] font-medium my-0.5">vs</p>
-                      <h3 className="text-base font-extrabold text-white leading-tight" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                      <p className="text-[11px] text-[#64748b] font-medium my-0.5">vs</p>
+                      <h3 className="text-base font-extrabold text-white leading-tight font-['Outfit']">
                         {m.teamB}
                       </h3>
                       {m.currentScore && (
-                        <p className="mt-2 text-lg font-black text-[#00e676] font-mono tracking-wider">{m.currentScore}</p>
+                        <p className="mt-2 text-lg font-black text-[#00e676] font-mono font-tabular tracking-wider">{m.currentScore}</p>
                       )}
                     </div>
 
                     {/* Odds buttons */}
                     {market?.outcomes && (
                       <div className="space-y-2">
-                        <p className="text-[10px] text-[#475569] uppercase tracking-widest font-bold">{market.name}</p>
+                        <p className="text-[10px] text-[#64748b] uppercase tracking-widest font-bold">{market.name}</p>
                         <div className={`grid gap-2 ${market.outcomes.length <= 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
                           {market.outcomes.slice(0, 3).map((out) => {
                             const selected = items.some((i) => i.outcomeId === out.id);
                             return (
-                              <button
+                              <motion.button
                                 key={out.id}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.97 }}
                                 onClick={() =>
                                   addItem({
                                     matchId: m.id,
@@ -333,19 +329,19 @@ export default function HomePage() {
                                     odds: out.odds,
                                   })
                                 }
-                                className={`relative flex flex-col items-center justify-center py-2.5 px-2 rounded-xl border text-center transition-all duration-200 overflow-hidden ${
+                                className={`relative flex flex-col items-center justify-center py-2.5 px-2 rounded-xl border text-center transition-all duration-150 overflow-hidden ${
                                   selected
-                                    ? 'bg-[#00e676] border-[#00e676] text-black shadow-lg shadow-[#00e676]/25'
-                                    : 'bg-white/[0.03] border-white/[0.07] text-white hover:border-[#00e676]/40 hover:bg-[#00e676]/5'
+                                    ? 'bg-[#00e676] border-[#00e676] text-black shadow-lg shadow-[#00e676]/25 font-bold'
+                                    : 'bg-[#10172a] border-white/[0.07] text-white hover:border-[#00e676]/40 hover:bg-[#162035]'
                                 }`}
                               >
-                                <span className={`text-[10px] font-semibold truncate w-full text-center ${selected ? 'text-black/70' : 'text-[#64748b]'}`}>
+                                <span className={`text-[10px] font-semibold truncate w-full text-center ${selected ? 'text-black/80' : 'text-[#8899aa]'}`}>
                                   {out.name}
                                 </span>
-                                <span className={`text-sm font-black mt-0.5 ${selected ? 'text-black' : 'text-[#00e676]'}`} style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                                <span className={`text-sm font-black mt-0.5 font-tabular ${selected ? 'text-black' : 'text-[#00e676]'}`} style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                                   {out.odds.toFixed(2)}
                                 </span>
-                              </button>
+                              </motion.button>
                             );
                           })}
                         </div>
