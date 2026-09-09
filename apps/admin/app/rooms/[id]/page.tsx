@@ -319,7 +319,9 @@ export default function RoomControlPage({ params }: { params: Promise<{ id: stri
                     </div>
                     <p className="text-sm text-white font-mono">{p.identity.slice(0, 12)}...</p>
                   </div>
-                  <VolumeX size={12} className="text-[#4a5568]" title="Subscriber only" />
+                  <span title="Subscriber only">
+                    <VolumeX size={12} className="text-[#4a5568]" />
+                  </span>
                 </div>
               ))}
             </div>
