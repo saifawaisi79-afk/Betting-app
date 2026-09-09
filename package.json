@@ -13,7 +13,6 @@
     "db:seed": "pnpm --filter @betting/db db:seed"
   },
   "dependencies": {
-    "@betting/types": "workspace:*",
     "next": "^15.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -59,5 +58,6 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "packageManager": "pnpm@9.15.4"
 }

@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@betting/types'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
